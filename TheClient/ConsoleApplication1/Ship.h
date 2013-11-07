@@ -7,16 +7,18 @@ class Ship :
 {
 public:
 	Ship(void);
-	Ship::Ship(int mX, int mY);
+	Ship::Ship(int mX, int mY, EventHandler e, int align);
 	~Ship(void);
 	int TargetX;
 	int TargetY;
 	sf::CircleShape act(EventHandler h);
 	sf::CircleShape act();
 	sf::CircleShape Ship::act(EventHandler e, Util * u);
+	bool didICollide(Actor a);
 
 private:
 	int moveSpeed;
 	int health;
+	int attackDelay;
 };
 

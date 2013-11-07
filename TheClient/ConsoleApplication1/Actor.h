@@ -11,7 +11,7 @@ class Actor
 public:
 	Actor(void);
 	~Actor(void);
-	int x, y;
+	double x, y;
 	int mx, my;
 	void getHit(Actor o);
 	double getRadius();
@@ -20,12 +20,14 @@ public:
 	virtual sf::CircleShape act();
 
 
-private:
+protected:
 	double radius;
 	sf::Time start;
 	sf::Time end;
 	int alignment;
 	sf::Color c;
+
+	
 
 };
 

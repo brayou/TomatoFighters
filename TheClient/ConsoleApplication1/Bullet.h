@@ -5,7 +5,7 @@ class Bullet :
 {
 public:
 	Bullet(void);
-	Bullet(int sX, int sY, int sdX, int sdY, int mX, int mY);
+	Bullet(double sX, double sY, double sdX, double sdY, int mX, int mY, int align);
 	~Bullet(void);
 	bool isDead;
 	Bullet* next;

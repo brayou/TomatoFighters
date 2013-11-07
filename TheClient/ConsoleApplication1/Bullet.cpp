@@ -6,14 +6,16 @@ Bullet::Bullet(void)
 {
 }
 
-Bullet::Bullet(int sX, int sY, int sdX, int sdY, int mX, int mY)
+Bullet::Bullet(double sX, double sY, double sdX, double sdY, int mX, int mY, int align)
 {
+	radius = 5;
 	x = sX;
 	y = sY;
 	dx = sdX;
 	dy = sdY;
 	mx = mX;
 	my = mY;
+	alignment = align;
 }
 
 Bullet::~Bullet(void)
@@ -22,7 +24,7 @@ Bullet::~Bullet(void)
 
 sf::CircleShape Bullet::act()
 {
-	sf::CircleShape shape(10.f);
+	sf::CircleShape shape(radius *2);
 	x += dx;
 	y += dy;
 	shape.setPosition(x, y);
@@ -32,6 +34,6 @@ sf::CircleShape Bullet::act()
 
 bool Bullet::deleteMe()
 {
-	return x>mx || y>my || x<0 || y<0;
+	return x>mx || y>my || x+radius*2<0 || y+radius*2<0;
 }
 
