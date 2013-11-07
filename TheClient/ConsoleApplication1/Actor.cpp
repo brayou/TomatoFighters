@@ -24,3 +24,12 @@ sf::CircleShape Actor::act()
 	shape.setFillColor(sf::Color::Blue);
 	return shape;
 }
+
+double Actor::getRadius()
+{
+	return radius;
+}
+int Actor::getAlign()
+{
+	return alignment;
+}

@@ -7,12 +7,15 @@ public:
 	~EventHandler(void);
 	int mouseLeftX;
 	int	mouseRightX;
-	int	mouseleftY;
+	int	mouseLeftY;
 	int	mouseRightY;
 	int mouseX;
 	int mouseY;
-	enum KEYS {space, what};
-	bool keySwitch [1];
+	int tar [2];
+	int * getTarget(int align);
+	bool shootNow(int align);
+	enum KEYS {space, z, x};
+	bool keySwitch [3];
 	sf::Clock myClock;
 };
 

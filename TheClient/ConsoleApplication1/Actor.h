@@ -25,7 +25,7 @@ protected:
 	sf::Time start;
 	sf::Time end;
 	int alignment;
-	sf::Color c;
+	sf::Color myColor;
 
 	
 

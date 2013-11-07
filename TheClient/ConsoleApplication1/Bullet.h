@@ -5,7 +5,7 @@ class Bullet :
 {
 public:
 	Bullet(void);
-	Bullet(double sX, double sY, double sdX, double sdY, int mX, int mY, int align);
+	Bullet(double sX, double sY, double sdX, double sdY, int mX, int mY, int align, sf::Color c);
 	~Bullet(void);
 	bool isDead;
 	Bullet* next;
@@ -17,6 +17,7 @@ public:
 	double dx;
 	double dy;
 	bool deleteMe();
+	bool destroy;
 
 private:
 

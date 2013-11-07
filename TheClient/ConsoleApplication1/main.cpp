@@ -26,8 +26,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	sf::Time start(events.myClock.getElapsedTime());
 	sf::Time end(events.myClock.getElapsedTime());
 	
-	Ship playerShip(MAXX, MAXY, events, 0);
-	Ship enemyShip(MAXX, MAXY, events, 1);
+	Ship playerShip(MAXX, MAXY, events, 0, sf::Color::Blue);
+	Ship enemyShip(MAXX, MAXY, events, 1, sf::Color::Green);
 
 	while (window.isOpen())
 	{
@@ -43,11 +43,28 @@ int _tmain(int argc, _TCHAR* argv[])
 			} else {
 				events.keySwitch[events.space] = false;
 			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
+				events.keySwitch[events.x] = true;
+			} else {
+				events.keySwitch[events.x] = false;
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)){
+				events.keySwitch[events.z] = true;
+			} else {
+				events.keySwitch[events.z] = false;
+			}
 
 			if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
 			{
 				events.mouseRightX = sf::Mouse::getPosition(window).x;
 				events.mouseRightY = sf::Mouse::getPosition(window).y;
+			}
+
+			if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+			{
+				events.mouseLeftX = sf::Mouse::getPosition(window).x;
+				events.mouseLeftY = sf::Mouse::getPosition(window).y;
 			}
 
 			events.mouseX = sf::Mouse::getPosition(window).x;
@@ -60,16 +77,32 @@ int _tmain(int argc, _TCHAR* argv[])
 			start = end;
 			window.clear();
 
-			window.draw(playerShip.act(events, &utils));
 			//std::cout << "pointer of first:" << utils.first << "\n";
 			Bullet * cur = utils.first;
 			Bullet * nex = utils.first;
 			int obs = 0;
+			playerShip.originColor();
+			enemyShip.originColor();
 			while(cur != NULL)
 			{
 				//std::cout << "LOOP\n";
 				nex = cur->next;
+
 				window.draw(cur->act());
+
+				if(playerShip.didICollide(cur))
+				{
+					cur->destroy = true;
+					playerShip.gotHitColor();
+				}
+
+				if(enemyShip.didICollide(cur))
+				{
+					cur->destroy = true;
+					enemyShip.gotHitColor();
+				}
+
+
 				if(cur->deleteMe())
 				{
 					if(cur->prev == NULL){
@@ -84,11 +117,15 @@ int _tmain(int argc, _TCHAR* argv[])
 					}
 					cur->prev = NULL;
 					cur->next = NULL;
-
+					cur->~Bullet();
 				}
+				
+			
 				obs++;
 				cur = nex;
 			}
+			window.draw(playerShip.act(events, &utils));
+			window.draw(enemyShip.act(events, &utils));
 			//std::cout << "number of things: " << obs << "\n";
 			//   window.draw(shape);
 			window.display();
