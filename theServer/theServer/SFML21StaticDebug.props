@@ -10,7 +10,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\SFML\lib;$(LibraryPath);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>C:\SFML\lib;$(LibraryPath);</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;sfml-network-s-d.lib;sfml-audio-s-d.lib;$(LibraryPath)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

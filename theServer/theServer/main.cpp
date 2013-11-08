@@ -3,6 +3,26 @@
 #include "stdafx.h"
 #include <SFML/Network.hpp>
 using namespace sf;
+
+//Determine if the char TERM is in one of the elements of the char array DATA
+int index(char data[], unsigned int len, char *term) {
+	unsigned int count = 0;
+	int index = -1;
+	for(unsigned int i = 0; i < len; i++) 
+		for(int j = 0; j < sizeof(data[i])/sizeof(char); i++) {
+			if(data[i] == term[count]) {
+				if(count == 0) index = i;
+				count++;
+			}
+			else {
+				count = 0;
+				index = -1;
+			}
+	}
+	if(count = len) return index;
+	else return -1;
+}
+
 int main(int argc, char* argv[])
 {
 	//declare the UDP socket
@@ -39,7 +59,7 @@ int main(int argc, char* argv[])
 		//allocate a new array for the remainder of the message and send it
 		const size_t remain = strlen(keysPressed) - max;
 		char *temp = new char[remain];
-		for(int i = max; i < remain + max; i++) temp[i] = keysPressed[i];
+		for(unsigned int i = max; i < remain + max; i++) temp[i] = keysPressed[i];
 		if(socket.send(temp,max,broadcast,portOut) != sf::Socket::Done) return -1;
 		//truncate the old array
 		keysPressed[max] = '\0';
@@ -76,22 +96,4 @@ int main(int argc, char* argv[])
 		ips[numIps-1] = sender;
 	}
 	return 0;
-}
-//Determine if the char TERM is in one of the elements of the char array DATA
-int index(char data[], unsigned int len, char *term) {
-	unsigned int count = 0;
-	int index = -1;
-	for(int i = 0; i < len; i++) 
-		for(int j = 0; j < sizeof(data[i])/sizeof(char); i++) {
-			if(data[i] == term[count]) {
-				if(count == 0) index = i;
-				count++;
-			}
-			else {
-				count = 0;
-				index = -1;
-			}
-	}
-	if(count = len) return index;
-	else return -1;
 }
