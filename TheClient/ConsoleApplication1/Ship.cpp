@@ -3,8 +3,6 @@
 #include <iostream>
 #include <cmath>
 
-// test Change Ren-Jay
-
 Ship::Ship(void)
 {
 }
