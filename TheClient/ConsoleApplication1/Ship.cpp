@@ -3,8 +3,6 @@
 #include <iostream>
 #include <cmath>
 
-// test push from my local clone - Ren-Jay
-
 Ship::Ship(void)
 {
 }
