@@ -14,14 +14,18 @@ public:
 	sf::CircleShape act(EventHandler h);
 	sf::CircleShape act();
 	sf::CircleShape Ship::act(EventHandler e, Util * u);
+	void special(EventHandler e, Util * u);
 	bool didICollide(Actor * a);
 	void gotHitColor();
 	void originColor();
 
 private:
+	int specialA;
+	int specialB;
 	int moveSpeed;
 	int health;
 	int attackDelay;
+	int curAtkDelay;
 	sf::Color hitColor;
 	sf::Color curColor;
 };

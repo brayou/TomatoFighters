@@ -11,14 +11,14 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-
 	std::cout << "I STARTED";
-	int MAXX = 500;
-	int MAXY = 500;
+	int MAXX = 500; //Window dimensions
+	int MAXY = 600;
 	sf::RenderWindow window(sf::VideoMode(MAXX, MAXY), "SFML works!");
 	sf::RenderWindow * point = new sf::RenderWindow();
 	// sf::CircleShape shape(100.f);
 	// shape.setFillColor(sf::Color::Green);
+	// Utils only has  clock right now, 
 	Util utils;
 	utils.initialize();
 	Ship opponentShip;
@@ -54,6 +54,77 @@ int _tmain(int argc, _TCHAR* argv[])
 			} else {
 				events.keySwitch[events.z] = false;
 			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+				events.keySwitch[events.w] = true;
+			} else {
+				events.keySwitch[events.w] = false;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+				events.keySwitch[events.a] = true;
+			} else {
+				events.keySwitch[events.a] = false;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+				events.keySwitch[events.s] = true;
+			} else {
+				events.keySwitch[events.s] = false;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+				events.keySwitch[events.d] = true;
+			} else {
+				events.keySwitch[events.d] = false;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)){
+				events.keySwitch[events.p] = true;
+			} else {
+				events.keySwitch[events.p] = false;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
+				events.keySwitch[events.e] = true;
+			} else {
+				events.keySwitch[events.e] = false;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
+				events.keySwitch[events.r] = true;
+			} else {
+				events.keySwitch[events.r] = false;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)){
+				events.keySwitch[events.o] = true;
+			} else {
+				events.keySwitch[events.o] = false;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::T)){
+				events.keySwitch[events.t] = true;
+			} else {
+				events.keySwitch[events.t] = false;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)){
+				events.keySwitch[events.i] = true;
+			} else {
+				events.keySwitch[events.i] = false;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+				events.keySwitch[events.up] = true;
+			} else {
+				events.keySwitch[events.up] = false;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+				events.keySwitch[events.down] = true;
+			} else {
+				events.keySwitch[events.down] = false;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+				events.keySwitch[events.left] = true;
+			} else {
+				events.keySwitch[events.left] = false;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+				events.keySwitch[events.right] = true;
+			} else {
+				events.keySwitch[events.right] = false;
+			}
+
 
 			if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
 			{
@@ -66,11 +137,15 @@ int _tmain(int argc, _TCHAR* argv[])
 				events.mouseLeftX = sf::Mouse::getPosition(window).x;
 				events.mouseLeftY = sf::Mouse::getPosition(window).y;
 			}
-
 			events.mouseX = sf::Mouse::getPosition(window).x;
 			events.mouseY = sf::Mouse::getPosition(window).y;
 			//std::cout << events.mouseRightX << "<" << events.mouseRightY << "\n";
 		}
+		
+			events.ally[0] = playerShip.x;
+			events.ally[1] = playerShip.y;
+			events.opp[0] = enemyShip.x;
+			events.opp[1] = enemyShip.y;
 		end = events.myClock.getElapsedTime();
 		if(end - start >= sf::milliseconds(15))
 		{
@@ -90,6 +165,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 				window.draw(cur->act());
 
+				//check shield collisions
+
 				if(playerShip.didICollide(cur))
 				{
 					cur->destroy = true;
@@ -102,6 +179,7 @@ int _tmain(int argc, _TCHAR* argv[])
 					enemyShip.gotHitColor();
 				}
 
+				
 
 				if(cur->deleteMe())
 				{
@@ -126,7 +204,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 			window.draw(playerShip.act(events, &utils));
 			window.draw(enemyShip.act(events, &utils));
-			//std::cout << "number of things: " << obs << "\n";
+			// std::cout << "number of things: " << obs << "\n";
 			//   window.draw(shape);
 			window.display();
 		}
