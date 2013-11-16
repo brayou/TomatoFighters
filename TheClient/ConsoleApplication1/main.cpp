@@ -37,101 +37,29 @@ int _tmain(int argc, _TCHAR* argv[])
 			if (event.type == sf::Event::Closed){
 				window.close();
 			}
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
-				events.keySwitch[events.space] = true;
-			} else {
-				events.keySwitch[events.space] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
-				events.keySwitch[events.x] = true;
-			} else {
-				events.keySwitch[events.x] = false;
-			}
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)){
-				events.keySwitch[events.z] = true;
-			} else {
-				events.keySwitch[events.z] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-				events.keySwitch[events.w] = true;
-			} else {
-				events.keySwitch[events.w] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-				events.keySwitch[events.a] = true;
-			} else {
-				events.keySwitch[events.a] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
-				events.keySwitch[events.s] = true;
-			} else {
-				events.keySwitch[events.s] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-				events.keySwitch[events.d] = true;
-			} else {
-				events.keySwitch[events.d] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)){
-				events.keySwitch[events.p] = true;
-			} else {
-				events.keySwitch[events.p] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
-				events.keySwitch[events.e] = true;
-			} else {
-				events.keySwitch[events.e] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
-				events.keySwitch[events.r] = true;
-			} else {
-				events.keySwitch[events.r] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)){
-				events.keySwitch[events.o] = true;
-			} else {
-				events.keySwitch[events.o] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::T)){
-				events.keySwitch[events.t] = true;
-			} else {
-				events.keySwitch[events.t] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)){
-				events.keySwitch[events.i] = true;
-			} else {
-				events.keySwitch[events.i] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-				events.keySwitch[events.up] = true;
-			} else {
-				events.keySwitch[events.up] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
-				events.keySwitch[events.down] = true;
-			} else {
-				events.keySwitch[events.down] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-				events.keySwitch[events.left] = true;
-			} else {
-				events.keySwitch[events.left] = false;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-				events.keySwitch[events.right] = true;
-			} else {
-				events.keySwitch[events.right] = false;
-			}
-
+			events.keySwitch[events.space] = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+			events.keySwitch[events.x] = sf::Keyboard::isKeyPressed(sf::Keyboard::X);
+			events.keySwitch[events.z] = sf::Keyboard::isKeyPressed(sf::Keyboard::Z);
+			events.keySwitch[events.w] = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+			events.keySwitch[events.a] = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+			events.keySwitch[events.s] = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
+			events.keySwitch[events.d] = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+			events.keySwitch[events.p] = sf::Keyboard::isKeyPressed(sf::Keyboard::P);
+			events.keySwitch[events.e] = sf::Keyboard::isKeyPressed(sf::Keyboard::E);
+			events.keySwitch[events.r] = sf::Keyboard::isKeyPressed(sf::Keyboard::R);
+			events.keySwitch[events.o] = sf::Keyboard::isKeyPressed(sf::Keyboard::O);
+			events.keySwitch[events.t] = sf::Keyboard::isKeyPressed(sf::Keyboard::T);
+			events.keySwitch[events.i] = sf::Keyboard::isKeyPressed(sf::Keyboard::I);
+			events.keySwitch[events.up] = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+			events.keySwitch[events.down] = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+			events.keySwitch[events.left] = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+			events.keySwitch[events.right] = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
 
 			if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
 			{
 				events.mouseRightX = sf::Mouse::getPosition(window).x;
 				events.mouseRightY = sf::Mouse::getPosition(window).y;
 			}
-
 			if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 			{
 				events.mouseLeftX = sf::Mouse::getPosition(window).x;
@@ -151,6 +79,9 @@ int _tmain(int argc, _TCHAR* argv[])
 		{
 			start = end;
 			window.clear();
+			
+			//***Send data to theServer
+			//BEGIN SENDING DATA TO theServer
 
 			//std::cout << "pointer of first:" << utils.first << "\n";
 			Bullet * cur = utils.first;
@@ -202,10 +133,12 @@ int _tmain(int argc, _TCHAR* argv[])
 				obs++;
 				cur = nex;
 			}
+			//END SENDING DATA TO theServer
+			//***Receive data from theServer
 			window.draw(playerShip.act(events, &utils));
 			window.draw(enemyShip.act(events, &utils));
 			// std::cout << "number of things: " << obs << "\n";
-			//   window.draw(shape);
+			// window.draw(shape);
 			window.display();
 		}
 	}
