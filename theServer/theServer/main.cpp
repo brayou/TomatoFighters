@@ -1,7 +1,7 @@
 // main.cpp : Defines the entry point for the console application.
 //
 #include "stdafx.h"
-#include <SFML/Network.hpp>
+//#include <SFML/Network.hpp>
 using namespace sf;
 
 //Determine if the char TERM is in one of the elements of the char array DATA
