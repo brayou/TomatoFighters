@@ -21,6 +21,8 @@ Ship::Ship(int mX, int mY, EventHandler e, int align, sf::Color c)
 	myColor = c;
 	curColor = c;
 	hitColor = sf::Color(255-c.r, 255-c.r,255-c.r);
+	shipTexture.loadFromFile("Me.jpg");
+	shipSprite.setTexture(shipTexture);
 }
 
 Ship::~Ship(void)
@@ -28,25 +30,31 @@ Ship::~Ship(void)
 }
 
 
-sf::CircleShape Ship::act(EventHandler e)
+sf::Sprite Ship::act(EventHandler e)
 {
+	/*
 	sf::CircleShape shape(radius*2);
 	shape.setFillColor(sf::Color::Blue);
 	return shape;
+	*/
+	return shipSprite;
 }
 
-sf::CircleShape Ship::act()
+sf::Sprite Ship::act()
 {
+	/*
 	sf::CircleShape shape(radius*2);
 	shape.setFillColor(sf::Color::Blue);
 	return shape;
+	*/
+	return shipSprite;
 }
 
-sf::CircleShape Ship::act(EventHandler e, Util* u)
+sf::Sprite Ship::act(EventHandler e, Util* u)
 {
-	
-	sf::CircleShape shape(radius);
-	shape.setFillColor(curColor);
+
+/*	sf::CircleShape shape(radius);
+	shape.setFillColor(curColor);*/
 	int * tar = e.getTarget(alignment);
 	double dx = tar[0];
 	double dy = tar[1];
@@ -60,7 +68,7 @@ sf::CircleShape Ship::act(EventHandler e, Util* u)
 		x += dx*magnitude;
 		y += dy*magnitude;
 	}
-	shape.setPosition(x, y);
+	shipSprite.setPosition(x, y);
 	end = e.myClock.getElapsedTime();
 	if(end - start >= sf::milliseconds(attackDelay))
 	{
@@ -78,7 +86,7 @@ sf::CircleShape Ship::act(EventHandler e, Util* u)
 		}
 	}
 	//std::cout << "pointer of first:" << u.first << "\n";
-	return shape;
+	return shipSprite;
 }
 
 bool Ship::didICollide(Actor * a)

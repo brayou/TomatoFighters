@@ -18,20 +18,20 @@ Bullet::Bullet(double sX, double sY, double sdX, double sdY, int mX, int mY, int
 	alignment = align;
 	myColor = c;
 	destroy = false;
+	bulletTexture.loadFromFile("Dessert.jpg", sf::IntRect(0, 0, 10, 10));
+	bulletSprite.setTexture(bulletTexture);
 }
 
 Bullet::~Bullet(void)
 {
 }
 
-sf::CircleShape Bullet::act()
+sf::Sprite Bullet::act()
 {
-	sf::CircleShape shape(radius);
 	x += dx;
 	y += dy;
-	shape.setPosition(x, y);
-	shape.setFillColor(myColor);
-	return shape;
+	bulletSprite.setPosition(x, y);
+	return bulletSprite;
 }
 
 bool Bullet::deleteMe()

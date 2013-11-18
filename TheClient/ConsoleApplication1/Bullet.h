@@ -11,7 +11,8 @@ public:
 	Bullet* next;
 	Bullet* prev;
 	void collide(Actor o);
-	sf::CircleShape act();
+
+	sf::Sprite act();
 	void add(Bullet b);
 	void removeContacts();
 	double dx;
@@ -20,7 +21,8 @@ public:
 	bool destroy;
 
 private:
-
+	sf::Texture bulletTexture;
+	sf::Sprite bulletSprite;
 
 };
 

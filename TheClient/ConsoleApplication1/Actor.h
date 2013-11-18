@@ -16,11 +16,13 @@ public:
 	void getHit(Actor o);
 	double getRadius();
 	int getAlign();
-	virtual sf::CircleShape act(EventHandler h);
-	virtual sf::CircleShape act();
+	virtual sf::Sprite act(EventHandler h);
+	virtual sf::Sprite act();
 
 
 protected:
+	sf::Texture actorTexture;
+	sf::Sprite actorSprite;
 	double radius;
 	sf::Time start;
 	sf::Time end;
