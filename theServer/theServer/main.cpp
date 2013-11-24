@@ -1,8 +1,14 @@
 // main.cpp : Defines the entry point for the console application.
 //
 #include "stdafx.h"
+#include "EventHandler.h"
+#include "Util.h"
 #include <SFML/Network.hpp>
+#include <SFML\Graphics.hpp>
+#include <iostream>
+#pragma once
 using namespace sf;
+
 
 //Determine if the char TERM is in one of the elements of the char array DATA
 int index(char data[], unsigned int len, char *term) {
@@ -25,6 +31,7 @@ int index(char data[], unsigned int len, char *term) {
 
 int main(int argc, char* argv[])
 {
+	std::cout << "SERVER STARTING UP";
 	//declare the UDP socket
 	UdpSocket socket;
 	socket.setBlocking(false);

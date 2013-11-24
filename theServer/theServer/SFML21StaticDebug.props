@@ -5,11 +5,11 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\SFML\include;$(IncludePath);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\SFML-2.1\include;$(IncludePath);</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SFML_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\SFML\lib;$(LibraryPath);</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\SFML-2.1\lib;$(LibraryPath);</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;sfml-network-s-d.lib;sfml-audio-s-d.lib;$(LibraryPath)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
