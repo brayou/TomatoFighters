@@ -14,14 +14,18 @@ public:
 	sf::Sprite act(EventHandler h);
 	sf::Sprite act();
 	sf::Sprite Ship::act(EventHandler e, Util * u);
+	void special(EventHandler e, Util * u);
 	bool didICollide(Actor * a);
 	void gotHitColor();
 	void originColor();
 
 private:
+	int specialA;
+	int specialB;
 	int moveSpeed;
 	int health;
 	int attackDelay;
+	int curAtkDelay;
 	sf::Color hitColor;
 	sf::Color curColor;
 	sf::Texture shipTexture;
