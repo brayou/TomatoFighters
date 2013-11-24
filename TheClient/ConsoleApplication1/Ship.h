@@ -26,5 +26,6 @@ private:
 	sf::Color curColor;
 	sf::Texture shipTexture;
 	sf::Sprite shipSprite;
+	sf::RenderTexture shipRenderTexture;
 };
 

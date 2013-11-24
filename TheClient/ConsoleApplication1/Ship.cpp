@@ -21,8 +21,17 @@ Ship::Ship(int mX, int mY, EventHandler e, int align, sf::Color c)
 	myColor = c;
 	curColor = c;
 	hitColor = sf::Color(255-c.r, 255-c.r,255-c.r);
+//	sf::Image shipImage;
+//	shipImage.loadFromFile("Me.jpg");
 	shipTexture.loadFromFile("Me.jpg");
 	shipSprite.setTexture(shipTexture);
+	shipRenderTexture.create(shipTexture.getSize().x, shipTexture.getSize().y);
+	shipRenderTexture.draw(shipSprite);
+	sf::CircleShape shape(radius * 2);
+	shape.setFillColor(sf::Color::Blue);
+	shipRenderTexture.draw(shape);	
+	shipRenderTexture.display(); // update the texture
+	shipSprite.setTexture(shipRenderTexture.getTexture());
 }
 
 Ship::~Ship(void)
