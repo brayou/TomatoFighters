@@ -19,7 +19,7 @@ Bullet::Bullet(double sX, double sY, double sdX, double sdY, int mX, int mY, int
 	alignment = align;
 	myColor = c;
 	destroy = false;
-	bulletTexture.loadFromFile("Dessert.jpg", sf::IntRect(0, 0, 10, 10));
+	bulletTexture.loadFromFile("Bullet.png", sf::IntRect(0, 0, 10, 10));
 	bulletSprite.setTexture(bulletTexture);
 }
 
@@ -42,6 +42,10 @@ sf::Sprite Bullet::act()
 	x += dx;
 	y += dy;
 	bulletSprite.setPosition(x, y);
+	if(alignment == 0)
+		bulletSprite.setColor(sf::Color(0, 0, 255)); // green
+	if(alignment == 1)
+		bulletSprite.setColor(sf::Color(0, 255, 0)); // green
 	return bulletSprite;
 }
 
