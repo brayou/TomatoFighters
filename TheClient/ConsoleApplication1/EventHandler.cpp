@@ -10,6 +10,10 @@ EventHandler::EventHandler(void)
 	mouseRightY = 50;
 	mouseLeftX = 50;
 	mouseLeftY = 50;
+	for(int i = 0; i < (sizeof(keySwitch)/sizeof(*keySwitch)); i++)
+		keySwitch[i] = false;
+	{
+	}
 }
 
 

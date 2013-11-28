@@ -9,6 +9,53 @@
 #include <iostream>
 
 
+void endGameWindow(sf::RenderWindow* window, int winnerAlign)
+{
+	while (window->isOpen())
+	{
+		sf::Event event;
+		while (window->pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed){
+				window->close();
+			}
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+				window->close();
+			window->clear();
+			sf::Text text;
+
+			sf::Font font;
+			font.loadFromFile("arial.ttf");
+
+
+			// select the font
+			text.setFont(font); // font is a sf::Font
+
+			// set the string to display
+			std::string s = "The Winner is ";
+			if(winnerAlign == 0)
+			s += "BLUE!";
+			if(winnerAlign == 1)
+			s += "GREEN!";
+			s+="\n Press space to exit";
+			text.setString(s);
+
+			text.setCharacterSize(30); // in pixels
+
+			if(winnerAlign == 0)
+			text.setColor(sf::Color::Blue);
+			if(winnerAlign == 1)
+			text.setColor(sf::Color::Green);
+
+			text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+			text.setPosition(10, 100);
+			window->draw(text);
+			window->display();
+		}
+	}
+}
+
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	std::cout << "I STARTED";
@@ -25,12 +72,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	EventHandler events;
 	sf::Time start(events.myClock.getElapsedTime());
 	sf::Time end(events.myClock.getElapsedTime());
-	
+
 	Ship playerShip(MAXX, MAXY, events, 0, sf::Color::Blue);
 	Ship enemyShip(MAXX, MAXY, events, 1, sf::Color::Green);
 
 	enemyShip.setHealthPosition(sf::Vector2f(0, window.getSize().y - enemyShip.getHealthBar().getSize().y));
-	
+
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -71,17 +118,17 @@ int _tmain(int argc, _TCHAR* argv[])
 			events.mouseY = sf::Mouse::getPosition(window).y;
 			//std::cout << events.mouseRightX << "<" << events.mouseRightY << "\n";
 		}
-		
-			events.ally[0] = playerShip.x;
-			events.ally[1] = playerShip.y;
-			events.opp[0] = enemyShip.x;
-			events.opp[1] = enemyShip.y;
+
+		events.ally[0] = playerShip.x;
+		events.ally[1] = playerShip.y;
+		events.opp[0] = enemyShip.x;
+		events.opp[1] = enemyShip.y;
 		end = events.myClock.getElapsedTime();
 		if(end - start >= sf::milliseconds(15))
 		{
 			start = end;
 			window.clear();
-			
+
 			//***Send data to theServer
 			//BEGIN SENDING DATA TO theServer
 
@@ -107,6 +154,7 @@ int _tmain(int argc, _TCHAR* argv[])
 					if (!playerShip.takeDamage((*cur).getDamage()))
 					{
 						std::cout << "Green wins!"; //TODO: Customize message & window for winner and loser
+						endGameWindow(&window, 1);
 						//window.close();
 					}
 				}
@@ -118,11 +166,12 @@ int _tmain(int argc, _TCHAR* argv[])
 					if (!enemyShip.takeDamage((*cur).getDamage()))
 					{
 						std::cout << "Blue wins!"; 
+						endGameWindow(&window, 0);
 						//window.close();
 					}
 				}
 
-				
+
 
 				if(cur->deleteMe())
 				{
@@ -140,8 +189,8 @@ int _tmain(int argc, _TCHAR* argv[])
 					cur->next = NULL;
 					cur->~Bullet();
 				}
-				
-			
+
+
 				obs++;
 				cur = nex;
 			}

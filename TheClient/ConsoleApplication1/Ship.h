@@ -22,6 +22,8 @@ public:
 	bool didICollide(Actor * a);
 	void gotHitColor();
 	void originColor();
+	Bullet* Ship::generateA(int specialA, int dir);
+	Bullet* Ship::generateB(int specialB, int dir, EventHandler e);
 
 private:
 	int specialA;

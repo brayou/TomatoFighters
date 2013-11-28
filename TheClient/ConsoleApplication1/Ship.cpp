@@ -99,6 +99,34 @@ void Ship::special(EventHandler e, Util *u)
 	}
 }
 
+Bullet* Ship::generateA(int specialA, int dir)
+{
+	double dx = (specialA-5.)/6;
+	double dy = dir;
+	double magnitude = 4/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
+
+	sf::Color newColor(curColor.r, curColor.g, curColor.b, sf::Int8(180));
+
+	Bullet * mine = new Bullet(x+radius/2, y+radius/2, dx*magnitude,  dy*magnitude, mx, my, alignment, newColor);
+	return mine;
+}
+
+Bullet* Ship::generateB(int specialB, int dir, EventHandler e)
+{
+	int * tar = e.getTargetB(alignment);
+	double dx = tar[0]+radius/2;
+	double dy = tar[1]+radius/2;
+
+	dx = dx-(x+radius/2+(specialB-5.)*10);
+	dy = dy-(y+radius/2);
+	double magnitude = 4/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
+	sf::Color newColor(curColor.r, curColor.g, curColor.b, sf::Int8(180));
+
+	Bullet * mine = new Bullet(x+radius/2+(specialB-5.)*10, y+radius/2, dx*magnitude,  dy*magnitude, mx, my, alignment, newColor);
+	return mine;
+}
+
+
 sf::Sprite Ship::act(EventHandler e, Util* u)
 {
 
@@ -142,29 +170,13 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 		if(specialA > 0)
 		{
 			specialA--;
-			double dx = (specialA-5.)/6;
-			double dy = dir;
-			double magnitude = 4/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
+			u->addBullet(generateA(specialA, dir));
 
-			sf::Color newColor(curColor.r, curColor.g, curColor.b, sf::Int8(180));
-
-			Bullet * mine = new Bullet(x+radius/2, y+radius/2, dx*magnitude,  dy*magnitude, mx, my, alignment, newColor);
-			u->addBullet(mine);
 		}else if(specialB>0)
 		{
 			specialB--;	
-			int * tar = e.getTargetB(alignment);
-			double dx = tar[0]+radius/2;
-			double dy = tar[1]+radius/2;
-			
-			dx = dx-(x+radius/2+(specialB-5.)*10);
-			dy = dy-(y+radius/2);
-			double magnitude = 4/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
+			u->addBullet(generateB(specialB, dir, e));
 
-			sf::Color newColor(curColor.r, curColor.g, curColor.b, sf::Int8(180));
-
-			Bullet * mine = new Bullet(x+radius/2+(specialB-5.)*10, y+radius/2, dx*magnitude,  dy*magnitude, mx, my, alignment, newColor);
-			u->addBullet(mine);
 		}else if(e.shootNow(alignment))
 		{
 
