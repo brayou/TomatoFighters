@@ -13,6 +13,7 @@ Ship::Ship(int mX, int mY, EventHandler e, int align, sf::Color c)
 	my = mY;
 	x = 50;
 	y = 50;
+	health = 100; // arbitrary value
 	start = e.myClock.getElapsedTime();
 	end = e.myClock.getElapsedTime();
 	radius = 20;
@@ -21,12 +22,14 @@ Ship::Ship(int mX, int mY, EventHandler e, int align, sf::Color c)
 	alignment = align;
 	myColor = c;
 	curColor = c;
+	healthBar.setSize(sf::Vector2f(health * 2, 50));
+	healthBar.setFillColor(curColor);
 	shipTexture.loadFromFile("Me.jpg");
 	shipSprite.setTexture(shipTexture);
 	shipRenderTexture.create(shipTexture.getSize().x, shipTexture.getSize().y);
 	shipRenderTexture.draw(shipSprite);
 	sf::CircleShape shape(radius * 2);
-	shape.setFillColor(sf::Color::Blue);
+	shape.setFillColor(curColor);
 	shipRenderTexture.draw(shape);	
 	shipRenderTexture.display(); // update the texture
 	shipSprite.setTexture(shipRenderTexture.getTexture());
@@ -40,6 +43,31 @@ Ship::~Ship(void)
 {
 }
 
+sf::RectangleShape Ship::getHealthBar()
+{
+	return healthBar;
+}
+
+void Ship::setColor(sf::Color color)
+{
+	healthBar.setFillColor(color);
+}
+
+void Ship::setHealthPosition(sf::Vector2f position)
+{
+	healthBar.setPosition(position);
+}
+
+bool Ship::takeDamage(int dmg) // return false if health is less than 0
+{
+	health -= dmg;
+	if (health < 0)
+	{
+		return false;
+	}
+	healthBar.setSize(sf::Vector2f(health * 2, 50));
+	return true;
+}
 
 sf::Sprite Ship::act(EventHandler e)
 {

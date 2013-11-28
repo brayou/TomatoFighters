@@ -12,6 +12,8 @@ public:
 	Bullet* prev;
 	void collide(Actor o);
 
+	void setDamage(int dmg);
+	int getDamage();
 	sf::Sprite act();
 	void add(Bullet b);
 	void removeContacts();
@@ -23,6 +25,7 @@ public:
 private:
 	sf::Texture bulletTexture;
 	sf::Sprite bulletSprite;
+	int damage;
 
 };
 

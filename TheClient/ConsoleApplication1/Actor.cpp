@@ -4,7 +4,16 @@
 
 Actor::Actor(void)
 {
-	actorTexture.loadFromFile("Kirby.jpg", sf::IntRect(0, 0, 10, 10));
+	actorTexture.create(100, 100);
+	sf::Uint8 pixels[100 * 100 * 4]; // arbitrary 100 x 100 size
+	for (int i = 0; i < 100; i++)
+	{
+		pixels[i * 4] = 0;
+		pixels[i * 4 + 1] = 0;
+		pixels[i * 4 + 2] = 255; // turn it blue
+		pixels[i * 4 + 3] = 255; // give it maximum opacity
+	}
+	actorTexture.update(pixels);
 	actorSprite.setTexture(actorTexture);
 }
 
@@ -15,21 +24,11 @@ Actor::~Actor(void)
 
 sf::Sprite Actor::act(EventHandler e)
 {
-	/*
-	sf::CircleShape shape(10.f);
-	shape.setFillColor(sf::Color::Blue);
-	return shape;
-	*/
 	return actorSprite;
 }
 
 sf::Sprite Actor::act()
 {
-	/*
-	sf::CircleShape shape(10.f);
-	shape.setFillColor(sf::Color::Blue);
-	return shape;
-	*/
 	return actorSprite;
 }
 

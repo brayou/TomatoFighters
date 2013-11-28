@@ -11,6 +11,10 @@ public:
 	~Ship(void);
 	int TargetX;
 	int TargetY;
+	sf::RectangleShape getHealthBar();
+	void setColor(sf::Color color);
+	void setHealthPosition(sf::Vector2f position);
+	bool takeDamage(int dmg);
 	sf::Sprite act(EventHandler h);
 	sf::Sprite act();
 	sf::Sprite Ship::act(EventHandler e, Util * u);
@@ -28,6 +32,7 @@ private:
 	int curAtkDelay;
 	sf::Color hitColor;
 	sf::Color curColor;
+	sf::RectangleShape healthBar;
 	sf::Texture shipTexture;
 	sf::Sprite shipSprite;
 	sf::RenderTexture shipRenderTexture;

@@ -29,6 +29,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	Ship playerShip(MAXX, MAXY, events, 0, sf::Color::Blue);
 	Ship enemyShip(MAXX, MAXY, events, 1, sf::Color::Green);
 
+	enemyShip.setHealthPosition(sf::Vector2f(0, window.getSize().y - enemyShip.getHealthBar().getSize().y));
+	
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -102,12 +104,22 @@ int _tmain(int argc, _TCHAR* argv[])
 				{
 					cur->destroy = true;
 					playerShip.gotHitColor();
+					if (!playerShip.takeDamage((*cur).getDamage()))
+					{
+						std::cout << "Green wins!"; //TODO: Customize message & window for winner and loser
+						window.close();
+					}
 				}
 
 				if(enemyShip.didICollide(cur))
 				{
 					cur->destroy = true;
 					enemyShip.gotHitColor();
+					if (!enemyShip.takeDamage((*cur).getDamage()))
+					{
+						std::cout << "Blue wins!"; 
+						window.close();
+					}
 				}
 
 				
@@ -135,6 +147,8 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 			//END SENDING DATA TO theServer
 			//***Receive data from theServer
+			window.draw(playerShip.getHealthBar());
+			window.draw(enemyShip.getHealthBar());
 			window.draw(playerShip.act(events, &utils));
 			window.draw(enemyShip.act(events, &utils));
 			// std::cout << "number of things: " << obs << "\n";

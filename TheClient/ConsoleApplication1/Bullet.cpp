@@ -15,6 +15,7 @@ Bullet::Bullet(double sX, double sY, double sdX, double sdY, int mX, int mY, int
 	dy = sdY;
 	mx = mX;
 	my = mY;
+	damage = 5; // default damage
 	alignment = align;
 	myColor = c;
 	destroy = false;
@@ -24,6 +25,16 @@ Bullet::Bullet(double sX, double sY, double sdX, double sdY, int mX, int mY, int
 
 Bullet::~Bullet(void)
 {
+}
+
+void Bullet::setDamage(int dmg)
+{
+	damage = dmg;
+}
+
+int Bullet::getDamage()
+{
+	return damage;
 }
 
 sf::Sprite Bullet::act()
