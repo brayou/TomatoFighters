@@ -98,7 +98,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 				window.draw(cur->act());
 
-				//check shield collisions
+				//check shield collisions to be added
 
 				if(playerShip.didICollide(cur))
 				{
@@ -107,7 +107,7 @@ int _tmain(int argc, _TCHAR* argv[])
 					if (!playerShip.takeDamage((*cur).getDamage()))
 					{
 						std::cout << "Green wins!"; //TODO: Customize message & window for winner and loser
-						window.close();
+						//window.close();
 					}
 				}
 
@@ -118,7 +118,7 @@ int _tmain(int argc, _TCHAR* argv[])
 					if (!enemyShip.takeDamage((*cur).getDamage()))
 					{
 						std::cout << "Blue wins!"; 
-						window.close();
+						//window.close();
 					}
 				}
 

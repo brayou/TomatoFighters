@@ -8,7 +8,7 @@ Bullet::Bullet(void)
 
 Bullet::Bullet(double sX, double sY, double sdX, double sdY, int mX, int mY, int align, sf::Color c)
 {
-	radius = 10;
+	radius = 5;
 	x = sX;
 	y = sY;
 	dx = sdX;

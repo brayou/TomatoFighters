@@ -12,7 +12,7 @@ Ship::Ship(int mX, int mY, EventHandler e, int align, sf::Color c)
 	mx = mX;
 	my = mY;
 	x = 50;
-	y = 50;
+	y = std::abs(mx * align - 50);
 	health = 100; // arbitrary value
 	start = e.myClock.getElapsedTime();
 	end = e.myClock.getElapsedTime();
@@ -28,8 +28,10 @@ Ship::Ship(int mX, int mY, EventHandler e, int align, sf::Color c)
 	shipSprite.setTexture(shipTexture);
 	shipRenderTexture.create(shipTexture.getSize().x, shipTexture.getSize().y);
 	shipRenderTexture.draw(shipSprite);
-	sf::CircleShape shape(radius * 2);
-	shape.setFillColor(curColor);
+	sf::CircleShape shape(radius);
+	shape.setOutlineColor(curColor);
+	shape.setFillColor(sf::Color(0,0,0,0));
+	shape.setOutlineThickness(1);
 	shipRenderTexture.draw(shape);	
 	shipRenderTexture.display(); // update the texture
 	shipSprite.setTexture(shipRenderTexture.getTexture());
