@@ -32,11 +32,16 @@ sf::Sprite Actor::act()
 	return actorSprite;
 }
 
-double Actor::getRadius()
+int Actor::getRadius()
 {
 	return radius;
 }
 int Actor::getAlign()
 {
 	return alignment;
+}
+
+char Actor::getType()
+{
+	return ' ';
 }

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "typeinfo"
 #include "Ship.h"
 #include <iostream>
 #include <cmath>
@@ -53,6 +54,11 @@ sf::RectangleShape Ship::getHealthBar()
 void Ship::setColor(sf::Color color)
 {
 	healthBar.setFillColor(color);
+}
+
+void Ship::setBarriers(std::vector<Barrier> barrierVector)
+{
+	this->barrierVector = barrierVector;
 }
 
 void Ship::setHealthPosition(sf::Vector2f position)
@@ -129,9 +135,6 @@ Bullet* Ship::generateB(int specialB, int dir, EventHandler e)
 
 sf::Sprite Ship::act(EventHandler e, Util* u)
 {
-
-	sf::CircleShape shape(radius);
-	shape.setFillColor(curColor);
 	int * tar = e.getTarget(alignment);
 	double dx = tar[0];
 	double dy = tar[1];
@@ -150,14 +153,23 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 
 	double magnitude = 2/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
 
+	bool hitBarrier = false;
 	if(std::abs(dx) > 1 || std::abs(dy) > 1)
 	{
 		x += dx*magnitude;
 		y += dy*magnitude;
+		for (int i = 0; i < barrierVector.size() && !hitBarrier; i++) // check barrier collisions
+		{
+			if (didICollide(&barrierVector.at(i)))
+			{
+				hitBarrier = true;
+			}
+		}
 	}
-	if(x+radius<0 || x+radius > mx)
+
+	if(x+radius<0 || x+radius > mx || hitBarrier)
 		x -= dx*magnitude;
-	if(y+radius<0 || y+radius > my)
+	if(y+radius<0 || y+radius > my || hitBarrier)
 		y -= dy*magnitude;
 	shipSprite.setPosition(x, y);
 	end = e.myClock.getElapsedTime();
@@ -188,9 +200,9 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 			double magnitude = 4/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
 
 			sf::Color newColor(curColor.r, curColor.g, curColor.b, sf::Int8(180));
-
 			Bullet * mine = new Bullet(x+radius/2, y+radius/2, dx*magnitude,  dy*magnitude, mx, my, alignment, newColor);
 			u->addBullet(mine);
+			
 
 		}
 	}
@@ -200,10 +212,31 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 
 bool Ship::didICollide(Actor * a)
 {
+	if (a->getType() == 'r') // is a barrier
+	{
+		int bxLeftBound = a->x - a->getRadius();
+		int bxRightBound = a->x + a->getRadius();
+		if (x + 2 * radius <= bxLeftBound || x >= bxRightBound) // note that x is the top left corner of the SPRITE not the circle
+		{
+			return false;
+		}
+		int byUpBound = a->y - a->getRadius();
+		int byDownBound = a->y + a->getRadius();
+		if (y + 2 * radius <= byUpBound || y >= byDownBound) // note that y is the top left corner of the sprite
+		{
+			return false;
+		} // TODO: add circular situations
+		return true;
+	}
 	if(a->getAlign() == alignment)
 		return false;
-	double dist =  std::sqrt(std::pow(a->x + a->getRadius()- x - radius, 2) + std::pow(a->y + a->getRadius() - y - radius, 2)); 
+	double dist =  distance(a->x + a->getRadius(), a->y + a->getRadius(), x + radius, y + radius); 
 	return dist < (a->getRadius() + radius);
+}
+
+double Ship::distance(double x1, double y1, double x2, double y2)
+{
+	return std::sqrt(std::pow(x1 - x2, 2) + std::pow(y1 - y2, 2)); 
 }
 
 void Ship::gotHitColor()
@@ -214,4 +247,9 @@ void Ship::gotHitColor()
 void Ship::originColor()
 {
 	curColor = myColor;
+}
+
+char Ship::getType()
+{
+	return 's';
 }

@@ -43,10 +43,16 @@ sf::Sprite Bullet::act()
 	y += dy;
 	bulletSprite.setPosition(x, y);
 	if(alignment == 0)
-		bulletSprite.setColor(sf::Color(0, 0, 255)); // green
+		bulletSprite.setColor(sf::Color(0, 0, 255)); // blue
 	if(alignment == 1)
 		bulletSprite.setColor(sf::Color(0, 255, 0)); // green
 	return bulletSprite;
+}
+
+void Bullet::setVelocity(double dx, double dy)
+{
+	this->dx = dx;
+	this->dy = dy;
 }
 
 bool Bullet::deleteMe()
@@ -54,3 +60,7 @@ bool Bullet::deleteMe()
 	return x>mx || y>my || x+radius*2<0 || y+radius*2<0 || destroy;
 }
 
+char Bullet::getType()
+{
+	return 'b';
+}

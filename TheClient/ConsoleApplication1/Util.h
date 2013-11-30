@@ -4,6 +4,7 @@
 #include "SFML\Audio.hpp"
 #include "SFML\Config.hpp"
 #include "Bullet.h" 
+#include "Barrier.h"
 #pragma once
 class Util
 {
@@ -15,8 +16,8 @@ public:
 	~Util(void);
 	void initialize();
 	void addBullet(Bullet * b);
-	Bullet* first;
-	Bullet* last;
+	Bullet* firstBullet;
+	Bullet* lastBullet;
 
 
 };
