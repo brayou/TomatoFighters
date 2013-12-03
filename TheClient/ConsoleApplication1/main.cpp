@@ -6,8 +6,9 @@
 #include "Ship.h"
 #pragma once
 #include <SFML\Graphics.hpp>
+#include <SFML\Network.hpp>
 #include <iostream>
-
+using namespace sf;
 
 void endGameWindow(sf::RenderWindow* window, int winnerAlign)
 {
@@ -77,7 +78,70 @@ int _tmain(int argc, _TCHAR* argv[])
 	Ship enemyShip(MAXX, MAXY, events, 1, sf::Color::Green);
 
 	enemyShip.setHealthPosition(sf::Vector2f(0, window.getSize().y - enemyShip.getHealthBar().getSize().y));
+	
+	//Set up client networking <------------------>
+	//declare the UDP socket
+	UdpSocket socket;
+	//let the socket receive empty packets
+	socket.setBlocking(false);
+	//let the OS pick a random port
+	Socket::AnyPort;
+	unsigned short portOut = socket.getLocalPort();
+	//bind the socket to the port
+	if(socket.bind(portOut) != Socket::Done) {
+		return -1;
+	}
+	//declare the input char array and its size (10 chars)
+	char keysPressed[] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+	size_t numKeys = strlen(keysPressed);
+	//declare my current IpAddress
+	IpAddress mine = IpAddress::getLocalAddress();
+	//declare the max message size that can be sent or received
+	const size_t max = UdpSocket::MaxDatagramSize - 1;
+	//Initalize the sender's IP and port
+	IpAddress sender;
+	unsigned short portIn;
+	//Initialize the server's IP
+	IpAddress server;
+	
+	//Halt program until server has been located ***POSSIBLE BREAKPOINT***
+	while(sender == NULL) {
+		//Receive data
+		if(socket.receive(keysPressed,max,numKeys,sender,portIn) != Socket::Done) {
+			return -1;
+		}
+		keysPressed
+		//Send identity
+		if(socket.send(keysPressed,numKeys,broadcast,portOut) != sf::Socket::Done) {
+			return -1;
+		}
+	}
+	//End networking setup <------------------>
+	
+	//LOOP BEGINS
 
+	//if the message is too big
+	if(strlen(keysPressed) > max) {
+		//allocate a new array for the remainder of the message and send it
+		const size_t remain = strlen(keysPressed) - max;
+		char *temp = new char[remain];
+		for(unsigned int i = max; i < remain + max; i++) temp[i] = keysPressed[i];
+		if(socket.send(temp,max,broadcast,portOut) != sf::Socket::Done) return -1;
+		//truncate the old array
+		keysPressed[max] = '\0';
+	}
+	//Send the keys pressed
+	if(socket.send(keysPressed,numKeys,broadcast,portOut) != sf::Socket::Done) {
+		return -1;
+	}
+	
+	//Receive keys pressed
+	if(socket.receive(keysPressed,max,numKeys,sender,portIn) != Socket::Done) {
+		return -1;
+	}
+	
+
+	//main client loop BELOW
 	while (window.isOpen())
 	{
 		sf::Event event;

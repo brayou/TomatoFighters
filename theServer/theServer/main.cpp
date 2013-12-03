@@ -3,8 +3,8 @@
 #include "stdafx.h"
 #include "EventHandler.h"
 #include "Util.h"
-#include <SFML/Network.hpp>
-#include <SFML\Graphics.hpp>
+#include <SFML\Network.hpp>
+//#include <SFML\Graphics.hpp>
 #include <iostream>
 #pragma once
 using namespace sf;
@@ -34,6 +34,7 @@ int main(int argc, char* argv[])
 	std::cout << "SERVER STARTING UP";
 	//declare the UDP socket
 	UdpSocket socket;
+	//let the socket receive empty packets
 	socket.setBlocking(false);
 	//let the OS pick a random port
 	Socket::AnyPort;
@@ -42,25 +43,55 @@ int main(int argc, char* argv[])
 	if(socket.bind(portOut) != Socket::Done) {
 		return -1;
 	}
-	//declare the input char array and its size
-	char keysPressed[] = {0};
+	unsigned int numClients = 0;
+	//declare the input char array and its size (10 chars)
+	char keysPressed[] = {255,numClients,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 	size_t numKeys = strlen(keysPressed);
 	//declare an "IpAddress" that actually messages everyone on the network(LAN)
 	IpAddress broadcast = IpAddress::Broadcast;
-	//declare my curent IpAddress
+	//declare my current IpAddress
 	IpAddress mine = IpAddress::getLocalAddress();
-	//declare the max message size that can be sent
+	//declare the max message size that can be sent or received
 	const size_t max = UdpSocket::MaxDatagramSize - 1;
+	
+	/* NOT NEEDED FOR ONLY 2 CLIENTS
 	//Declare an array of IPs
 	IpAddress ips[] = {mine};
 	//Get the size of the IP array
 	const int numIps = sizeof(ips)/sizeof(mine);
+	*/
+	
 	//Initalize the sender's IP and port
 	IpAddress sender;
 	unsigned short portIn;
+	//Initialize client 1 and 2's IPs
+	IpAddress client1, client2;
 
+	while(client1 == NULL || client2 == NULL) {
+		sender = NULL;
+		//Send 255 followed by the number of clients connected
+		if(socket.send(keysPressed,numKeys,broadcast,portOut) != sf::Socket::Done) {
+			return -1;
+		}
+		//Receive null packets from clients that have found us
+		if(socket.receive(keysPressed,max,numKeys,sender,portIn) != Socket::Done) {
+			return -1;
+		}
+		//If we've received something
+		if(sender != NULL) {
+			//If this is the first client to connect
+			if(client1 == NULL) {
+				client1 = sender;
+				//Change numClients to 1 and recreate the identifier packet
+				numClients++;
+				char keysPressed[] = {255,numClients,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+
+	}
+
+	
+	
 	//LOOP BEGINS
-
+	while(
 	//if the message is too big
 	if(strlen(keysPressed) > max) {
 		//allocate a new array for the remainder of the message and send it
@@ -81,6 +112,7 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 	
+	/* NOT NEEDED FOR ONLY 2 CLIENTS
 	//Initalize a char-converted array of the IPs
 	char ipsChar[numIps];
 	//Convert the IPs to char
@@ -102,5 +134,7 @@ int main(int argc, char* argv[])
 			ips[i] = ipsTemp[i];
 		ips[numIps-1] = sender;
 	}
+	*/
+
 	return 0;
 }
