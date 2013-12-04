@@ -19,12 +19,12 @@ public:
 	virtual sf::Sprite act(EventHandler h);
 	virtual sf::Sprite act();
 	virtual char getType(); // can change to String if number of types of Actors increases
-
+	
+	int radius;
 
 protected:
 	sf::Texture actorTexture;
 	sf::Sprite actorSprite;
-	int radius;
 	sf::Time start;
 	sf::Time end;
 	int alignment;

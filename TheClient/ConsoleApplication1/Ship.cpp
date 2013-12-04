@@ -25,7 +25,10 @@ Ship::Ship(int mX, int mY, EventHandler e, int align, sf::Color c)
 	curColor = c;
 	healthBar.setSize(sf::Vector2f(health * 2, 50));
 	healthBar.setFillColor(curColor);
-	shipTexture.loadFromFile("Me.jpg");
+	if(alignment == 0)
+		shipTexture.loadFromFile("ShipB.png");
+	else
+		shipTexture.loadFromFile("ShipG.png");
 	shipSprite.setTexture(shipTexture);
 	shipRenderTexture.create(shipTexture.getSize().x, shipTexture.getSize().y);
 	shipRenderTexture.draw(shipSprite);

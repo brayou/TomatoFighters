@@ -203,11 +203,11 @@ int _tmain(int argc, _TCHAR* argv[])
 						hitBarrier = true;
 						if (collisionValue == 1) // vertical collision. see definition in Barrier class
 						{
-							cur->setVelocity(-cur->dy, cur->dx); // want 90 degree collision
+							cur->setVelocity(cur->dx, -cur->dy); // want 90 degree collision
 						}
 						if (collisionValue == 2) // must be 1 or 2
 						{
-							cur->setVelocity(cur->dy, -cur->dx);
+							cur->setVelocity(-cur->dx, cur->dy);
 						}
 					}
 				}

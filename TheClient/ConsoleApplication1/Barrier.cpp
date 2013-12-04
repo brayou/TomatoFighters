@@ -69,9 +69,17 @@ int Barrier::howDidICollide(Actor* a) //-1 indicates no collision. 1 indicates a
 	if (!Barrier::didICollide(a)) return -1;
 	int bxLeftBound = x - radius;
 	int bxRightBound = x + getRadius();
-	if (a->x + a->getRadius() + 1 > bxLeftBound || a->x - a->getRadius() - 1 < bxRightBound)
+	int bxUpBound = y - radius;
+	int bxDownBound = y + getRadius();
+
+	if ((a->x + a->getRadius() > bxLeftBound|| a->x - a->getRadius()< bxRightBound) && (std::abs(a->y - bxUpBound) < a->getRadius() || std::abs(a->y - bxDownBound) < a->getRadius() ))
 	{
 		return 1; // vertical collision
 	}
-	return 2; // otherwise is horizontal
+/*	
+	if (a->y + a->getRadius()*2 + 1 > bxUpBound|| a->y - a->getRadius()*2 - 1 < bxDownBound)
+	{
+		return 2; // Horizontal collision
+	} */
+	return 2; // otherwise is Horizontal
 }

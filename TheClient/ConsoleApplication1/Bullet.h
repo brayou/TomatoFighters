@@ -28,6 +28,7 @@ private:
 	sf::Texture bulletTexture;
 	sf::Sprite bulletSprite;
 	int damage;
+	int life;
 
 };
 

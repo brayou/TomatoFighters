@@ -21,6 +21,7 @@ Bullet::Bullet(double sX, double sY, double sdX, double sdY, int mX, int mY, int
 	destroy = false;
 	bulletTexture.loadFromFile("Bullet.png", sf::IntRect(0, 0, 10, 10));
 	bulletSprite.setTexture(bulletTexture);
+	life = 300;
 }
 
 Bullet::~Bullet(void)
@@ -46,6 +47,7 @@ sf::Sprite Bullet::act()
 		bulletSprite.setColor(sf::Color(0, 0, 255)); // blue
 	if(alignment == 1)
 		bulletSprite.setColor(sf::Color(0, 255, 0)); // green
+	life--;
 	return bulletSprite;
 }
 
@@ -57,7 +59,7 @@ void Bullet::setVelocity(double dx, double dy)
 
 bool Bullet::deleteMe()
 {
-	return x>mx || y>my || x+radius*2<0 || y+radius*2<0 || destroy;
+	return x>mx || y>my || x+radius*2<0 || y+radius*2<0 || destroy||life < 0;
 }
 
 char Bullet::getType()
