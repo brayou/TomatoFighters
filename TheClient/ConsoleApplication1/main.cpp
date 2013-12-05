@@ -8,10 +8,16 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Network.hpp>
 #include <iostream>
+<<<<<<< HEAD
 using namespace sf;
+=======
+#include <vector>
 
-void endGameWindow(sf::RenderWindow* window, int winnerAlign)
+>>>>>>> a71cefdf36a1c73499ddb63c1ea6807d822f9a9d
+
+void endGameWindow(sf::RenderWindow* window, int winnerAlign, std::vector<Barrier> barriers)
 {
+	std::vector<Barrier>().swap(barriers); // deallocate memory by swapping with an empty vector
 	while (window->isOpen())
 	{
 		sf::Event event;
@@ -141,13 +147,52 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	
 
+<<<<<<< HEAD
 	//main client loop BELOW
+=======
+	// Make barriers
+
+	// All barriers share the same texture for effiency
+
+	int radius = MAXX / 10; // arbitrary radius
+	sf::RectangleShape barrierShape;
+	barrierShape.setSize(sf::Vector2f(2 * radius, 2 * radius));
+	barrierShape.setFillColor(sf::Color(128, 64, 0, 255)); // brown
+	
+	sf::RenderTexture barrierTexture;
+	barrierTexture.create(barrierShape.getSize().x, barrierShape.getSize().y);
+	barrierTexture.draw(barrierShape);
+	barrierTexture.display();
+	sf::Texture bTexture = barrierTexture.getTexture();
+
+	int numBarriers = MAXX * MAXY / 40000; // arbitrary number
+	srand(time(NULL)); // different seed each time
+	std::vector<Barrier> barrierVector(numBarriers);
+	for (int i = 0; i < numBarriers; i++)
+	{
+		Barrier* newBarrier = new Barrier(std::rand() % MAXX, std::rand() % MAXY, radius, bTexture);
+		std::cout << newBarrier->x << " ";
+		if (playerShip.didICollide(newBarrier) || enemyShip.didICollide(newBarrier))
+		{
+			i--; // do not want this barrier;
+		}
+		else
+		{
+			barrierVector[i] = *newBarrier;
+		}
+	}
+
+	playerShip.setBarriers(barrierVector); // Send the same barrier information to each player
+	enemyShip.setBarriers(barrierVector);
+
+>>>>>>> a71cefdf36a1c73499ddb63c1ea6807d822f9a9d
 	while (window.isOpen())
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed){
+				std::vector<Barrier>().swap(barrierVector); // deallocate barrier vector
 				window.close();
 			}
 			events.keySwitch[events.space] = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
@@ -192,13 +237,20 @@ int _tmain(int argc, _TCHAR* argv[])
 		{
 			start = end;
 			window.clear();
+			
+			// Draw barriers
+
+			for (int i = 0; i < barrierVector.size(); i++)
+			{
+				window.draw(barrierVector[i].act());
+			}
 
 			//***Send data to theServer
 			//BEGIN SENDING DATA TO theServer
 
 			//std::cout << "pointer of first:" << utils.first << "\n";
-			Bullet * cur = utils.first;
-			Bullet * nex = utils.first;
+			Bullet * cur = utils.firstBullet;
+			Bullet * nex = utils.firstBullet;
 			int obs = 0;
 			playerShip.originColor();
 			enemyShip.originColor();
@@ -211,6 +263,25 @@ int _tmain(int argc, _TCHAR* argv[])
 
 				//check shield collisions to be added
 
+				//check barrier collisions
+
+				bool hitBarrier = false;
+				for (int i = 0; i < barrierVector.size() && !hitBarrier; i++)
+				{
+					int collisionValue = barrierVector.at(i).howDidICollide(cur);
+					if (collisionValue != -1)
+					{
+						hitBarrier = true;
+						if (collisionValue == 1) // vertical collision. see definition in Barrier class
+						{
+							cur->setVelocity(cur->dx, -cur->dy); // want 90 degree collision
+						}
+						if (collisionValue == 2) // must be 1 or 2
+						{
+							cur->setVelocity(-cur->dx, cur->dy);
+						}
+					}
+				}
 				if(playerShip.didICollide(cur))
 				{
 					cur->destroy = true;
@@ -218,7 +289,7 @@ int _tmain(int argc, _TCHAR* argv[])
 					if (!playerShip.takeDamage((*cur).getDamage()))
 					{
 						std::cout << "Green wins!"; //TODO: Customize message & window for winner and loser
-						endGameWindow(&window, 1);
+						endGameWindow(&window, 1, barrierVector);
 						//window.close();
 					}
 				}
@@ -230,7 +301,7 @@ int _tmain(int argc, _TCHAR* argv[])
 					if (!enemyShip.takeDamage((*cur).getDamage()))
 					{
 						std::cout << "Blue wins!"; 
-						endGameWindow(&window, 0);
+						endGameWindow(&window, 0, barrierVector);
 						//window.close();
 					}
 				}
@@ -240,12 +311,12 @@ int _tmain(int argc, _TCHAR* argv[])
 				if(cur->deleteMe())
 				{
 					if(cur->prev == NULL){
-						utils.first = cur->next;
+						utils.firstBullet = cur->next;
 					}else{
 						cur->prev->next = cur->next;
 					}
 					if(cur->next == NULL){
-						utils.last = cur->prev;
+						utils.lastBullet = cur->prev;
 					}else{
 						cur->next->prev = cur->prev;
 					}
