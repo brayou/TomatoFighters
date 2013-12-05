@@ -8,12 +8,8 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Network.hpp>
 #include <iostream>
-<<<<<<< HEAD
 using namespace sf;
-=======
 #include <vector>
-
->>>>>>> a71cefdf36a1c73499ddb63c1ea6807d822f9a9d
 
 void endGameWindow(sf::RenderWindow* window, int winnerAlign, std::vector<Barrier> barriers)
 {
@@ -105,23 +101,25 @@ int _tmain(int argc, _TCHAR* argv[])
 	//declare the max message size that can be sent or received
 	const size_t max = UdpSocket::MaxDatagramSize - 1;
 	//Initalize the sender's IP and port
-	IpAddress sender;
+	IpAddress sender = IpAddress(0,0,0,0);
 	unsigned short portIn;
 	//Initialize the server's IP
-	IpAddress server;
-	
+	IpAddress server = IpAddress(0,0,0,0);
+
 	//Halt program until server has been located ***POSSIBLE BREAKPOINT***
-	while(sender == NULL) {
+	/*
+	while(sender.toInteger() == 0) {
 		//Receive data
 		if(socket.receive(keysPressed,max,numKeys,sender,portIn) != Socket::Done) {
 			return -1;
 		}
-		keysPressed
+		//keysPressed
 		//Send identity
-		if(socket.send(keysPressed,numKeys,broadcast,portOut) != sf::Socket::Done) {
+		if(socket.send(keysPressed,numKeys,server,portOut) != sf::Socket::Done) {
 			return -1;
 		}
-	}
+	} 
+	*/
 	//End networking setup <------------------>
 	
 	//LOOP BEGINS
@@ -132,26 +130,25 @@ int _tmain(int argc, _TCHAR* argv[])
 		const size_t remain = strlen(keysPressed) - max;
 		char *temp = new char[remain];
 		for(unsigned int i = max; i < remain + max; i++) temp[i] = keysPressed[i];
-		if(socket.send(temp,max,broadcast,portOut) != sf::Socket::Done) return -1;
+		if(socket.send(temp,max,server,portOut) != sf::Socket::Done) return -1;
 		//truncate the old array
 		keysPressed[max] = '\0';
 	}
 	//Send the keys pressed
-	if(socket.send(keysPressed,numKeys,broadcast,portOut) != sf::Socket::Done) {
+	/*
+	if(socket.send(keysPressed,numKeys,server,portOut) != sf::Socket::Done) {
 		return -1;
 	}
-	
+	*//*
 	//Receive keys pressed
 	if(socket.receive(keysPressed,max,numKeys,sender,portIn) != Socket::Done) {
 		return -1;
 	}
-	
+	*/
 
-<<<<<<< HEAD
 	//main client loop BELOW
-=======
+	
 	// Make barriers
-
 	// All barriers share the same texture for effiency
 
 	int radius = MAXX / 10; // arbitrary radius
@@ -185,7 +182,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	playerShip.setBarriers(barrierVector); // Send the same barrier information to each player
 	enemyShip.setBarriers(barrierVector);
 
->>>>>>> a71cefdf36a1c73499ddb63c1ea6807d822f9a9d
 	while (window.isOpen())
 	{
 		sf::Event event;
