@@ -11,16 +11,24 @@ public:
 	Bullet* next;
 	Bullet* prev;
 	void collide(Actor o);
-	sf::CircleShape act();
+
+	void setDamage(int dmg);
+	int getDamage();
+	sf::Sprite act();
+	char getType();
 	void add(Bullet b);
 	void removeContacts();
 	double dx;
 	double dy;
+	void setVelocity(double dx, double dy);
 	bool deleteMe();
 	bool destroy;
 
 private:
-
+	sf::Texture bulletTexture;
+	sf::Sprite bulletSprite;
+	int damage;
+	int life;
 
 };
 

@@ -14,14 +14,17 @@ public:
 	double x, y;
 	int mx, my;
 	void getHit(Actor o);
-	double getRadius();
+	int getRadius();
 	int getAlign();
-	virtual sf::CircleShape act(EventHandler h);
-	virtual sf::CircleShape act();
-
+	virtual sf::Sprite act(EventHandler h);
+	virtual sf::Sprite act();
+	virtual char getType(); // can change to String if number of types of Actors increases
+	
+	int radius;
 
 protected:
-	double radius;
+	sf::Texture actorTexture;
+	sf::Sprite actorSprite;
 	sf::Time start;
 	sf::Time end;
 	int alignment;

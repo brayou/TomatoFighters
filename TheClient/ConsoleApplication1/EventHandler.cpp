@@ -82,7 +82,7 @@ bool EventHandler::shootNow(int align)
 		return keySwitch[e];
 	if(align == 1)
 		return keySwitch[p];
-
+	return false;
 }
 
 char EventHandler::special(int align)

@@ -15,8 +15,8 @@ Util::~Util(void)
 
 void Util::initialize()
 {
-	first = NULL;
-	last = NULL;
+	firstBullet = NULL;
+	lastBullet = NULL;
 	std::cout << "Initializing utils\n";
 }
 
@@ -24,18 +24,17 @@ void Util::addBullet(Bullet * b)
 {
 	
 	//std::cout << "Pointer of b:" << b << " and pointer of first:" << first << "\n";
-	if(first == NULL)
+	if(firstBullet == NULL)
 	{
-		
-		first = b;
-		last = b;
+		firstBullet = b;
+		lastBullet = b;
 	} else 
 	{
-		last->next = b;
-		b->prev = last;
-		last = b;
-		//std::cout << "adding a bullet\n";
+		lastBullet->next = b;
+		b->prev = lastBullet;
+		lastBullet = b;
 	}
 
 }
+
 

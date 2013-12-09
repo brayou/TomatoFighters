@@ -10,6 +10,10 @@ EventHandler::EventHandler(void)
 	mouseRightY = 50;
 	mouseLeftX = 50;
 	mouseLeftY = 50;
+	for(int i = 0; i < (sizeof(keySwitch)/sizeof(*keySwitch)); i++)
+		keySwitch[i] = false;
+	{
+	}
 }
 
 
@@ -78,7 +82,7 @@ bool EventHandler::shootNow(int align)
 		return keySwitch[e];
 	if(align == 1)
 		return keySwitch[p];
-
+	return false;
 }
 
 char EventHandler::special(int align)
