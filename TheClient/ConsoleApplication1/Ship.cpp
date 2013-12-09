@@ -200,8 +200,8 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 			curAtkDelay = attackDelay;
 			double dx = 0;
 			double dy = dir;
-			double magnitude = 4/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
-
+			double magnitude = 4/dy; // equivalent to 4/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
+	
 			sf::Color newColor(curColor.r, curColor.g, curColor.b, sf::Int8(180));
 			Bullet * mine = new Bullet(x+radius/2, y+radius/2, dx*magnitude,  dy*magnitude, mx, my, alignment, newColor);
 			u->addBullet(mine);

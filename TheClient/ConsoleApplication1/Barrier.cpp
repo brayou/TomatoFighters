@@ -47,6 +47,7 @@ sf::Sprite Barrier::act()
 	return barrierSprite;
 }
 
+// Checks whether the Barrier collided with the Actor. It treats the actor circle like a square.
 bool Barrier::didICollide(Actor* a) // given x and y are the center of a circle. it is treated like a rectangle
 {
 	int bxLeftBound = x - radius;
@@ -60,11 +61,13 @@ bool Barrier::didICollide(Actor* a) // given x and y are the center of a circle.
 	if (a->y + a->getRadius() <= byUpBound || a->y - a->getRadius() >= byDownBound) // note that y is the top left corner of the sprite
 	{
 		return false;
-	} // TODO: add circular situations
+	}
 	return true;
 }
 
-int Barrier::howDidICollide(Actor* a) //-1 indicates no collision. 1 indicates a collision with a vertical surface. 2 indicates a collision with a horizontal surface
+// Checks how the Barrier collided with an Actor.
+// -1 indicates no collision. 1 indicates a collision with a vertical surface. 2 indicates a collision with a horizontal surface
+int Barrier::howDidICollide(Actor* a)
 {
 	if (!Barrier::didICollide(a)) return -1;
 	int bxLeftBound = x - radius;
@@ -72,14 +75,10 @@ int Barrier::howDidICollide(Actor* a) //-1 indicates no collision. 1 indicates a
 	int bxUpBound = y - radius;
 	int bxDownBound = y + getRadius();
 
-	if ((a->x + a->getRadius() > bxLeftBound|| a->x - a->getRadius()< bxRightBound) && (std::abs(a->y - bxUpBound) < a->getRadius() || std::abs(a->y - bxDownBound) < a->getRadius() ))
-	{
+	if (std::abs(a->x - bxLeftBound) <= a->getRadius() || std::abs(a->x - bxRightBound) <= a->getRadius())
+	{ 
 		return 1; // vertical collision
 	}
-/*	
-	if (a->y + a->getRadius()*2 + 1 > bxUpBound|| a->y - a->getRadius()*2 - 1 < bxDownBound)
-	{
-		return 2; // Horizontal collision
-	} */
+
 	return 2; // otherwise is Horizontal
 }

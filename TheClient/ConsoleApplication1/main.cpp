@@ -79,7 +79,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	Ship playerShip(MAXX, MAXY, events, 0, sf::Color::Blue);
 	Ship enemyShip(MAXX, MAXY, events, 1, sf::Color::Green);
 
-	enemyShip.setHealthPosition(sf::Vector2f(0, window.getSize().y - enemyShip.getHealthBar().getSize().y));
+	enemyShip.setHealthPosition(sf::Vector2f(0, window.getSize().y - enemyShip.getHealthBar().getSize().y)); // set the "enemy" health bar to the bottom of the screen
 	
 	//Set up client networking <------------------>
 	//declare the UDP socket
@@ -151,7 +151,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	// Make barriers
 	// All barriers share the same texture for effiency
 
-	int radius = MAXX / 10; // arbitrary radius
+	int radius = MAXX / 10; // arbitrary barrier radius. The radius is the length of the barrier side.
 	sf::RectangleShape barrierShape;
 	barrierShape.setSize(sf::Vector2f(2 * radius, 2 * radius));
 	barrierShape.setFillColor(sf::Color(128, 64, 0, 255)); // brown
@@ -162,16 +162,16 @@ int _tmain(int argc, _TCHAR* argv[])
 	barrierTexture.display();
 	sf::Texture bTexture = barrierTexture.getTexture();
 
-	int numBarriers = MAXX * MAXY / 40000; // arbitrary number
-	srand(time(NULL)); // different seed each time
-	std::vector<Barrier> barrierVector(numBarriers);
-	for (int i = 0; i < numBarriers; i++)
+	int numBarriers = MAXX * MAXY / 40000; // arbitrary number of barriers
+	srand(time(NULL)); // different seed each time in order to get different random numbers
+	std::vector<Barrier> barrierVector(numBarriers); // create the Barrier array
+ 	for (int i = 0; i < numBarriers; i++) // set up the Barrier array
 	{
-		Barrier* newBarrier = new Barrier(std::rand() % MAXX, std::rand() % MAXY, radius, bTexture);
+		Barrier* newBarrier = new Barrier(std::rand() % MAXX, std::rand() % MAXY, radius, bTexture); // generate a Barrier at a random position
 		std::cout << newBarrier->x << " ";
 		if (playerShip.didICollide(newBarrier) || enemyShip.didICollide(newBarrier))
 		{
-			i--; // do not want this barrier;
+			i--; // if the barrier encloses a ship, we do not want it;
 		}
 		else
 		{
@@ -270,11 +270,11 @@ int _tmain(int argc, _TCHAR* argv[])
 						hitBarrier = true;
 						if (collisionValue == 1) // vertical collision. see definition in Barrier class
 						{
-							cur->setVelocity(cur->dx, -cur->dy); // want 90 degree collision
+							cur->setVelocity(-cur->dx, cur->dy); // flip the horizontal velocity
 						}
-						if (collisionValue == 2) // must be 1 or 2
+						if (collisionValue == 2) // collisionValue must be 1 or 2. This is the horizontal collision case.
 						{
-							cur->setVelocity(-cur->dx, cur->dy);
+							cur->setVelocity(cur->dx, -cur->dy); // flip the vertical velocity
 						}
 					}
 				}
@@ -284,7 +284,7 @@ int _tmain(int argc, _TCHAR* argv[])
 					playerShip.gotHitColor();
 					if (!playerShip.takeDamage((*cur).getDamage()))
 					{
-						std::cout << "Green wins!"; //TODO: Customize message & window for winner and loser
+						std::cout << "Green wins!";
 						endGameWindow(&window, 1, barrierVector);
 						//window.close();
 					}
@@ -336,7 +336,6 @@ int _tmain(int argc, _TCHAR* argv[])
 			window.display();
 		}
 	}
-
 	return 0;
 }
 
