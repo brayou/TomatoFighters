@@ -145,15 +145,6 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 	dx = dx-(x+radius);
 	dy = dy-(y+radius);
 
-	if(e.controlScheme == 1)
-	{
-		//std::cout<<tar[0]<<","<<tar[1]<<"\n";
-
-		dx = tar[0] * moveSpeed;
-		dy = tar[1] * moveSpeed;
-		//std::cout<<dx<<","<<dy<<"\n";
-	}
-
 	double magnitude = 2/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
 
 	bool hitBarrier = false;

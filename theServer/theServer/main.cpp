@@ -20,12 +20,13 @@ int main(int argc, char* argv[])
 	Socket::AnyPort;
 	unsigned short portOut = socket.getLocalPort();
 	//bind the socket to the port ***POSSIBLE BREAKPOINT***
-	while(socket.bind(portOut) != Socket::Done) socket.bind(portOut);
+	if(socket.bind(portOut) != Socket::Done) 
+		return -1;
 
 	unsigned int numClients = 0;
-	//declare the input char array and its size (10 chars)
-	char keysPressed[] = {255,numClients,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
-	size_t numKeys = strlen(keysPressed);
+	//declare the input char array and its size (20 chars)
+	char packet[] = {255,numClients,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+	size_t numKeys = strlen(packet);
 	//declare an "IpAddress" that actually messages everyone on the network(LAN)
 	IpAddress broadcast = IpAddress::Broadcast;
 	//declare my current IpAddress
@@ -51,9 +52,9 @@ int main(int argc, char* argv[])
 	while(true) {
 		while(client1.toInteger() == 0 || client2.toInteger() == 0) {
 			//Send 255 followed by the number of clients connected
-			socket.send(keysPressed,numKeys,broadcast,portOut);
+			socket.send(packet,numKeys,broadcast,portOut);
 			//Receive null packets from clients that have found us
-			socket.receive(keysPressed,max,numKeys,sender,portIn);
+			socket.receive(packet,max,numKeys,sender,portIn);
 			//If we've received something
 			if(sender.toInteger() != 0) {
 				//If this is the first client to connect
@@ -61,12 +62,12 @@ int main(int argc, char* argv[])
 					client1 = sender;
 					//Change numClients to 1 and recreate the identifier packet
 					numClients = 1;
-					char keysPressed[] = {255,numClients,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+					char packet[] = {255,numClients,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 				}
 				else if(client2.toInteger() == 0) {
 					client2 = sender;
 					numClients = 2;
-					char keysPressed[] = {255,numClients,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+					char packet[] = {255,numClients,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 				}
 			}
 			sender = NULL;
@@ -83,7 +84,7 @@ int main(int argc, char* argv[])
 			std::cout << "Clients connected!";
 			//Receive keys pressed
 			//If no messages received OR if messages are not coming from the clients
-			if(socket.receive(keysPressed,max,numKeys,sender,portIn) != Socket::Done || sender != client1 || sender != client2) {
+			if(socket.receive(packet,max,numKeys,sender,portIn) != Socket::Done || sender != client1 || sender != client2) {
 				//Check to make sure each timer does not exceed 250 ms
 				//If it does, disconnect that client
 				end1 = events.myClock.getElapsedTime();
@@ -109,7 +110,7 @@ int main(int argc, char* argv[])
 			//SENDING DATA BELOW
 			
 			//Send the data back to the clients
-			socket.send(keysPressed,numKeys,broadcast,portOut);			
+			socket.send(packet,numKeys,broadcast,portOut);			
 		}
 	}
 	return 0;
