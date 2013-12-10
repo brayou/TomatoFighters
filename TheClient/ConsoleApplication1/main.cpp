@@ -102,7 +102,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//Initialize the server's IP
 	IpAddress server = IpAddress(0,0,0,0);
 	//Halt program until server has been located ***POSSIBLE BREAKPOINT***
-	/*
+	
 	while(server.toInteger() == 0) {
 		//If we receive a packet
 		if(socket.receive(packet,max,numKeys,sender,portIn) == Socket::Done) {
@@ -116,7 +116,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 		}
 	}
-	*/
+	
 	/*
 	// Make barriers
 	// All barriers share the same texture for effiency

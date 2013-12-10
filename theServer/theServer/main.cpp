@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
 					char packet[] = {255,numClients,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 				}
 			}
-			sender = NULL;
+			sender = IpAddress(0,0,0,0);
 		}
 		//Clients connected! Now make sure they stay connected
 		EventHandler events;
