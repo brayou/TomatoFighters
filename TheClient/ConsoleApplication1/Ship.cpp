@@ -192,9 +192,9 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 			double dx = 0;
 			double dy = dir;
 			double magnitude = 4/dy; // equivalent to 4/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
-	
+			int dir = alignment * 2 - 1;
 			sf::Color newColor(curColor.r, curColor.g, curColor.b, sf::Int8(180));
-			Bullet * mine = new Bullet(x+radius/2, y+radius/2, dx*magnitude,  dy*magnitude, mx, my, alignment, newColor);
+			Bullet * mine = new Bullet(x+radius-5, y+radius, dx*magnitude,  - dir * dy*magnitude, mx, my, alignment, newColor);
 			u->addBullet(mine);
 			
 
