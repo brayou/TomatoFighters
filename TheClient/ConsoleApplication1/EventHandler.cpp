@@ -31,7 +31,7 @@ int * EventHandler::getTarget(int align)
 	return tar;
 }
 
-int * EventHandler::getTargetB(int align)
+int * EventHandler::getTargetB(int align)//stuff for aiming bullets in special attack b
 {
 	tar[0] = 0;
 	tar[1] = 0;

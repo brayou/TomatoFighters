@@ -69,7 +69,7 @@ void Ship::setHealthPosition(sf::Vector2f position)
 	healthBar.setPosition(position);
 }
 
-bool Ship::takeDamage(int dmg) // return false if health is less than 0
+bool Ship::takeDamage(int dmg) // return false if health is less than 0 //no damage reduction, just health-dmg
 {
 	health -= dmg;
 	if (health < 0)
@@ -135,7 +135,7 @@ Bullet* Ship::generateB(int specialB, int dir, EventHandler e)
 	return mine;
 }
 
-
+//movement and shooting happen here
 sf::Sprite Ship::act(EventHandler e, Util* u)
 {
 	int * tar = e.getTarget(alignment);
@@ -151,7 +151,7 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 	double magnitude = 2/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
 
 	bool hitBarrier = false;
-	if(std::abs(dx) > 1 || std::abs(dy) > 1)
+	if(std::abs(dx) > 1 || std::abs(dy) > 1) //only moves if velocity is above a threshold. only relevant when moving with a mouse
 	{
 		x += dx*magnitude;
 		y += dy*magnitude;
@@ -169,7 +169,7 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 		x -= dx*magnitude;
 	if(y+radius<0 || y+radius > my || hitBarrier)
 		y -= dy*magnitude;
-	shipSprite.setPosition(x, y);
+	shipSprite.setPosition(x, y); //updating position
 	end = e.myClock.getElapsedTime();
 	special(e, u);
 	if(end - start >= sf::milliseconds(curAtkDelay)) // start bullet creation stuff // Only allows the bullet to be shot every curAtkDelay seconds

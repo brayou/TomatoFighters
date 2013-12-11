@@ -200,6 +200,8 @@ int _tmain(int argc, _TCHAR* argv[])
 			
 
 			//std::cout << "pointer of first:" << utils.first << "\n";
+			
+			//starts to loop through the list of bullets
 			Bullet * cur = utils.firstBullet;
 			Bullet * nex = utils.firstBullet;
 			int obs = 0;
@@ -210,7 +212,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				//std::cout << "LOOP\n";
 				nex = cur->next;
 
-				window.draw(cur->act());
+				window.draw(cur->act()); //bullets move in act()
 
 				//check shield collisions to be added
 
@@ -235,6 +237,9 @@ int _tmain(int argc, _TCHAR* argv[])
 					}
 				}
 				*/
+				
+				//checking bullet to ship collisions
+				//they can only collide if alignments are different
 				if(playerShip.didICollide(cur))
 				{
 					cur->destroy = true;
@@ -261,7 +266,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 
-				if(cur->deleteMe())
+				if(cur->deleteMe())//removes the bullet from the list
 				{
 					if(cur->prev == NULL){
 						utils.firstBullet = cur->next;
@@ -287,7 +292,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			//***Receive data from theServer
 			window.draw(playerShip.getHealthBar());
 			window.draw(enemyShip.getHealthBar());
-			window.draw(playerShip.act(events, &utils));
+			window.draw(playerShip.act(events, &utils));//ships move in this step
 			window.draw(enemyShip.act(events, &utils));
 			// std::cout << "number of things: " << obs << "\n";
 			// window.draw(shape);
