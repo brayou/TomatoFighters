@@ -11,18 +11,18 @@ Ship::Ship(void)
 Ship::Ship(int mX, int mY, EventHandler e, int align, sf::Color c)
 {
 	mx = mX;
-	my = mY;
-	x = 50;
-	y = std::abs(mx * align - 50);
+	my = mY; //max x and y bounds, edges of the map
+	x = 50; //starting position x
+	y = std::abs(mx * align - 50);//starting y position, changes based on which side (top/bottom) of the screen you are on
 	health = 100; // arbitrary value
 	start = e.myClock.getElapsedTime();
-	end = e.myClock.getElapsedTime();
-	radius = 20;
-	attackDelay = 100;
-	curAtkDelay = attackDelay;
-	alignment = align;
+	end = e.myClock.getElapsedTime(); //used to control attack speed
+	radius = 20; //hit circle radius
+	attackDelay = 100; //ms between attacks
+	curAtkDelay = attackDelay; //special attacks may have differet attack speeds
+	alignment = align;//green (1) or blue (0)
 	myColor = c;
-	curColor = c;
+	curColor = c;//used to change the color when hit. currently not used
 	healthBar.setSize(sf::Vector2f(health * 2, 50));
 	healthBar.setFillColor(curColor);
 	if(alignment == 0) //changes sprite based on which side you are on
@@ -40,8 +40,8 @@ Ship::Ship(int mX, int mY, EventHandler e, int align, sf::Color c)
 	shipRenderTexture.display(); // update the texture
 	shipSprite.setTexture(shipRenderTexture.getTexture());
 	hitColor = sf::Color(255-c.r, 255-c.g,255-c.b);
-	moveSpeed = 2;
-	specialA = 0;
+	moveSpeed = 2;//set the move speed
+	specialA = 0;//these two are used to decide when to use special attacks.
 	specialB = 0;
 }
 
