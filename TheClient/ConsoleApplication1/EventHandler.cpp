@@ -52,7 +52,7 @@ bool EventHandler::shootNow(int align)
 	return keySwitch[p];
 }
 
-char EventHandler::special(int align)
+char EventHandler::special(int align) 
 {
 	if(keySwitch[o])
 		return 'A';

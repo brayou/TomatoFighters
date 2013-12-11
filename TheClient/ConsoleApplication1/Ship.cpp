@@ -25,7 +25,7 @@ Ship::Ship(int mX, int mY, EventHandler e, int align, sf::Color c)
 	curColor = c;
 	healthBar.setSize(sf::Vector2f(health * 2, 50));
 	healthBar.setFillColor(curColor);
-	if(alignment == 0)
+	if(alignment == 0) //changes sprite based on which side you are on
 		shipTexture.loadFromFile("ShipB.png");
 	else
 		shipTexture.loadFromFile("ShipG.png");
@@ -108,7 +108,7 @@ void Ship::special(EventHandler e, Util *u)
 	}
 }
 
-Bullet* Ship::generateA(int specialA, int dir)
+Bullet* Ship::generateA(int specialA, int dir) //these two generate special patterns of bullets
 {
 	double dx = (specialA-5.)/6;
 	double dy = dir;
@@ -141,6 +141,9 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 	int * tar = e.getTarget(alignment);
 	double dx = tar[0];
 	double dy = tar[1];
+	dx = tar[0] * moveSpeed;//modifying for move speed
+	dy = tar[1] * moveSpeed;
+
 
 	dx = dx-(x+radius);
 	dy = dy-(y+radius);
@@ -160,7 +163,8 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 			}
 		}
 	}
-
+	
+	//sets velocity back to 0
 	if(x+radius<0 || x+radius > mx || hitBarrier)
 		x -= dx*magnitude;
 	if(y+radius<0 || y+radius > my || hitBarrier)
@@ -168,7 +172,7 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 	shipSprite.setPosition(x, y);
 	end = e.myClock.getElapsedTime();
 	special(e, u);
-	if(end - start >= sf::milliseconds(curAtkDelay)) // start bullet creation stuff
+	if(end - start >= sf::milliseconds(curAtkDelay)) // start bullet creation stuff // Only allows the bullet to be shot every curAtkDelay seconds
 	{
 		int dir = -(alignment*2-1);
 		start = end;
@@ -194,7 +198,8 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 			double magnitude = 4/dy; // equivalent to 4/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
 			int dir = alignment * 2 - 1;
 			sf::Color newColor(curColor.r, curColor.g, curColor.b, sf::Int8(180));
-			Bullet * mine = new Bullet(x+radius-5, y+radius, dx*magnitude,  - dir * dy*magnitude, mx, my, alignment, newColor);
+			//creates a new bullet and throws it onto the list.
+			Bullet * mine = new Bullet(x+radius-5, y+radius, dx*magnitude,  - dir * dy*magnitude, mx, my, alignment, newColor); 
 			u->addBullet(mine);
 			
 
