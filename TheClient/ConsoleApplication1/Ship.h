@@ -7,7 +7,7 @@ class Ship :
 {
 public:
 	Ship(void);
-	Ship::Ship(int mX, int mY, EventHandler e, int align, sf::Color c);
+	Ship::Ship(int mX, int mY, EventHandler e, int align);
 	~Ship(void);
 	int TargetX;
 	int TargetY;

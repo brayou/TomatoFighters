@@ -8,7 +8,7 @@ public:
 	int tar [2];
 	int ally [2];
 	int opp [2];
-	int * getTarget(int align);
+	int * getTarget();
 	int * getTargetB(int align);
 	bool shootNow(int align);
 	char special(int align);

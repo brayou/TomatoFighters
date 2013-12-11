@@ -15,7 +15,7 @@ EventHandler::~EventHandler(void)
 {
 }
 
-int * EventHandler::getTarget(int align)
+int * EventHandler::getTarget()
 {
 	tar[0] = 0;
 	tar[1] = 0;
@@ -33,30 +33,21 @@ int * EventHandler::getTarget(int align)
 
 int * EventHandler::getTargetB(int align)//stuff for aiming bullets in special attack b
 {
-	tar[0] = 0;
-	tar[1] = 0;
-	if (align == 0)
-	{
-		tar[0] = opp[0];
-		tar[1] = opp[1];
-	} else if (align == 1)
-	{
-		tar[0] = ally[0];
-		tar[1] = ally[1];
-	}
+	tar[0] = ally[0];
+	tar[1] = ally[1];
 	return tar;
 }
 
 bool EventHandler::shootNow(int align)
 {
-	return keySwitch[p];
+	return keySwitch[i];
 }
 
 char EventHandler::special(int align) 
 {
 	if(keySwitch[o])
 		return 'A';
-	if(keySwitch[i])
+	if(keySwitch[p])
 		return 'B';
 	return 'x';
 }
