@@ -74,7 +74,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	socket.setBlocking(false);
 	//let the OS pick a random port
 	//Socket::AnyPort;
-	unsigned short portOut = 49200;//socket.getLocalPort();
+	unsigned short portOut = socket.getLocalPort();
 	//bind the socket to the port
 	if(socket.bind(portOut) != Socket::Done)
 		return -1;
@@ -92,10 +92,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	//Initialize the server's IP
 	IpAddress server = IpAddress(0,0,0,0);
 	//Halt program until server has been located ***POSSIBLE BREAKPOINT***
-	/*
+	
 	while(server.toInteger() == 0) {
 		//If we receive a packet
-		if(socket.receive(packet,max,numKeys,sender,portIn) == Socket::Done) {
+		socket.receive(packet,max,numKeys,sender,portIn);// == Socket::Done) {
 			std::cout<<"Received packet("<<packet<<") from "<<sender.toString()<<"\n";
 			//If it's from the server
 			if(packet[0] = 255) {
@@ -105,11 +105,11 @@ int _tmain(int argc, _TCHAR* argv[])
 				if(socket.send(packet,numKeys,server,portOut) == Socket::Done) {
 					alignment = packet[1];
 					break;
-				}
+				
 			}
 		}
 	}
-	*/
+	
 	// sf::CircleShape shape(100.f);
 	// shape.setFillColor(sf::Color::Green);
 	// Utils only has  clock right now, 
