@@ -38,7 +38,7 @@ int Bullet::getDamage()
 	return damage;
 }
 
-sf::Sprite Bullet::act() //just moves the bullet
+sf::Sprite Bullet::act()
 {
 	x += dx;
 	y += dy;
