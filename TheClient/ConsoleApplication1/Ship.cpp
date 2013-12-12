@@ -8,24 +8,24 @@ Ship::Ship(void)
 {
 }
 
-Ship::Ship(int mX, int mY, EventHandler e, int align)
+Ship::Ship(int mX, int mY, EventHandler e, int align, sf::Color c)
 {
 	mx = mX;
-	my = mY;
-	x = 50;
-	y = std::abs(mx * align - 50);
+	my = mY; //max x and y bounds, edges of the map
+	x = 50; //starting position x
+	y = std::abs(mx * align - 50);//starting y position, changes based on which side (top/bottom) of the screen you are on
 	health = 100; // arbitrary value
 	start = e.myClock.getElapsedTime();
-	end = e.myClock.getElapsedTime();
-	radius = 20;
-	attackDelay = 100;
-	curAtkDelay = attackDelay;
-	if(align == 0) myColor = sf::Color::Blue;
-	else if(align == 1) myColor = sf::Color::Green;
-	curColor = myColor;
+	end = e.myClock.getElapsedTime(); //used to control attack speed
+	radius = 20; //hit circle radius
+	attackDelay = 100; //ms between attacks
+	curAtkDelay = attackDelay; //special attacks may have differet attack speeds
+	alignment = align;//green (1) or blue (0)
+	myColor = c;
+	curColor = c;//used to change the color when hit. currently not used
 	healthBar.setSize(sf::Vector2f(health * 2, 50));
 	healthBar.setFillColor(curColor);
-	if(align == 0) //changes sprite based on which side you are on
+	if(alignment == 0)
 		shipTexture.loadFromFile("ShipB.png");
 	else
 		shipTexture.loadFromFile("ShipG.png");
@@ -39,9 +39,9 @@ Ship::Ship(int mX, int mY, EventHandler e, int align)
 	shipRenderTexture.draw(shape);	
 	shipRenderTexture.display(); // update the texture
 	shipSprite.setTexture(shipRenderTexture.getTexture());
-	hitColor = sf::Color(255-myColor.r, 255-myColor.g,255-myColor.b);
-	moveSpeed = 2;
-	specialA = 0;
+	hitColor = sf::Color(255-c.r, 255-c.g,255-c.b);
+	moveSpeed = 2;//set the move speed
+	specialA = 0;//these two are used to decide when to use special attacks.
 	specialB = 0;
 }
 
@@ -108,7 +108,7 @@ void Ship::special(EventHandler e, Util *u)
 	}
 }
 
-Bullet* Ship::generateA(int specialA, int dir) //these two generate special patterns of bullets
+Bullet* Ship::generateA(int specialA, int dir)
 {
 	double dx = (specialA-5.)/6;
 	double dy = dir;
@@ -138,13 +138,12 @@ Bullet* Ship::generateB(int specialB, int dir, EventHandler e)
 //movement and shooting happen here
 sf::Sprite Ship::act(EventHandler e, Util* u)
 {
-	int * tar = e.getTarget();
+	int * tar = e.getTarget(alignment);
 	double dx = tar[0];
 	double dy = tar[1];
-	//std::cout<<tar[0]<<","<<tar[1]<<"\n";
-	dx = tar[0] * moveSpeed;
-	dy = tar[1] * moveSpeed;
-	//std::cout<<dx<<","<<dy<<"\n";
+
+	dx = dx-(x+radius);
+	dy = dy-(y+radius);
 
 	double magnitude = 2/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
 
@@ -161,8 +160,7 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 			}
 		}
 	}
-	
-	//sets velocity back to 0
+
 	if(x+radius<0 || x+radius > mx || hitBarrier)
 		x -= dx*magnitude;
 	if(y+radius<0 || y+radius > my || hitBarrier)
@@ -170,7 +168,7 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 	shipSprite.setPosition(x, y); //updating position
 	end = e.myClock.getElapsedTime();
 	special(e, u);
-	if(end - start >= sf::milliseconds(curAtkDelay)) // start bullet creation stuff // Only allows the bullet to be shot every curAtkDelay seconds
+	if(end - start >= sf::milliseconds(curAtkDelay)) // start bullet creation stuff
 	{
 		int dir = -(alignment*2-1);
 		start = end;
@@ -196,8 +194,7 @@ sf::Sprite Ship::act(EventHandler e, Util* u)
 			double magnitude = 4/dy; // equivalent to 4/std::sqrt(std::abs(dx)*std::abs(dx)+std::abs(dy)*std::abs(dy));
 			int dir = alignment * 2 - 1;
 			sf::Color newColor(curColor.r, curColor.g, curColor.b, sf::Int8(180));
-			//creates a new bullet and throws it onto the list.
-			Bullet * mine = new Bullet(x+radius-5, y+radius, dx*magnitude,  - dir * dy*magnitude, mx, my, alignment, newColor); 
+			Bullet * mine = new Bullet(x+radius-5, y+radius, dx*magnitude,  - dir * dy*magnitude, mx, my, alignment, newColor);
 			u->addBullet(mine);
 			
 
